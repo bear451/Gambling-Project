@@ -1,2 +1,2 @@
-Layton:500
+Layton:700
 James:500

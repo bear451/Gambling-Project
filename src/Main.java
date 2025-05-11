@@ -72,8 +72,7 @@ public class Main {
         }
         //Precondition-Player is not null
         Casino casino = new Casino(player);
-        System.out.println(casino.getPlayer().getName());
-
-
+        BlackJack blackjack = new BlackJack(player);
+        blackjack.play(30);
     }
 }
