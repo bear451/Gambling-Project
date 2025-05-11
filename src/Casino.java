@@ -31,4 +31,7 @@ public class Casino {
                 fw.close();
 
     }
+    public Player getPlayer() {
+        return player;
+    }
 }

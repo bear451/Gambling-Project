@@ -20,6 +20,7 @@ public class Main {
         System.out.println("WELCOME TO THE CASINO");
         //Handles the account
         boolean a = true;
+        Player player = new Player("Default",500);
         while(a)
         {
             System.out.println("Do you already have an account? (Y/N)");
@@ -28,7 +29,7 @@ public class Main {
             {
                 System.out.println("What was the name of your account?");
                 String name = input.nextLine();
-                a = false;
+
 
                 try {
                     FileReader fr = new FileReader("History.txt");
@@ -41,18 +42,16 @@ public class Main {
                         {
                             String s = line.substring(0, line.indexOf(":"));
                             int numInt = Integer.parseInt(line.substring(line.indexOf(":") + 1));
-                            Player player = new Player(s, numInt);
+                            player = new Player(s, numInt);
                             line = br.readLine();
+                            a = false;
                         }
                         else
                         {
                             line = br.readLine();
                         }
                     }
-                    if(!found)
-                    {
-                        System.out.println("Failed to find");
-                    }
+
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
@@ -63,7 +62,7 @@ public class Main {
             {
                 System.out.println("What do you want the name of your account to be?");
                 String name = input.nextLine();
-                Player player = new Player(name);
+                player = new Player(name);
                 a = false;
             }
             else{
@@ -72,8 +71,8 @@ public class Main {
 
         }
         //Precondition-Player is not null
-        
-
+        Casino casino = new Casino(player);
+        System.out.println(casino.getPlayer().getName());
 
 
     }
