@@ -1,3 +1,1 @@
-Layton:700
-Lexi:500
-Stacy:2000
+Layton:920

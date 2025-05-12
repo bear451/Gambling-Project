@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         File history = new File("history.txt");
+        //This creates a File called history to store a constant leaderboard of scores
         if (!history.exists()){
             try{
                 //noinspection ResultOfMethodCallIgnored
@@ -21,6 +22,7 @@ public class Main {
         //Handles the account
         boolean a = true;
         Player player = new Player("Default",500);
+        //Create or Load account of player
         while(a)
         {
             System.out.println("Do you already have an account? (Y/N)");
@@ -32,6 +34,7 @@ public class Main {
 
 
                 try {
+                    //Load their account
                     FileReader fr = new FileReader("History.txt");
                     BufferedReader br = new BufferedReader(fr);
                     String line = br.readLine();
@@ -59,12 +62,14 @@ public class Main {
             }
             else if(account.equalsIgnoreCase("N"))
             {
+                //If they do not have an account, let them create one
                 System.out.println("What do you want the name of your account to be?");
                 String name = input.nextLine();
                 player = new Player(name);
                 a = false;
             }
             else{
+                //Catch not valid inputs
                 System.out.println("Invalid input");
             }
 
@@ -74,22 +79,58 @@ public class Main {
         boolean GAMELOOP = true;
         while(GAMELOOP)
         {
-            if(player.getCash() < 0) {
-                blackjack = new BlackJack(player);
-                System.out.println("How much do you want to bet? (INT)");
-                int bet = input.nextInt();
-                if (bet > player.getCash()) {
-                    blackjack.play(bet);
-                    System.out.println("Your current balance is: " + player.getCash() + "$");
-                    System.out.println("Would you like to play again? (Y/N)");
-                    input.nextLine();
-                    String keeponkeepingon = input.nextLine();
-                    if (keeponkeepingon.equalsIgnoreCase("n")) {
-                        GAMELOOP = false;
+            //Black Jack
+            if(player.getCash() > 0) {
+                System.out.println("Would you like to play BlackJack or Slots? (B/S) (X=to exit)");
+                String choice = input.nextLine();
+                if(choice.equalsIgnoreCase("B")) {
+                    boolean blackjackloop = true;
+                    while (blackjackloop) {
+                        blackjack = new BlackJack(player);
+                        System.out.println("How much do you want to bet? (INT)");
+                        int bet = input.nextInt();
+                        if (bet <= player.getCash()) {
+                            blackjack.play(bet);
+                            System.out.println("Your current balance is: " + player.getCash() + "$");
+                            System.out.println("Would you like to play again? (Y/N)");
+                            input.nextLine();
+                            String keeponkeepingon = input.nextLine();
+                            if (keeponkeepingon.equalsIgnoreCase("n")) {
+                                blackjackloop = false;
+                            }
+                        } else {
+                            System.out.println("That bet is more money than you have.");
+                            System.out.println("You have: " + player.getCash() + "$");
+                        }
                     }
-                } else {
-                    System.out.println("That bet is more money than you have.");
-                    System.out.println("You have: " + player.getCash() + "$");
+                }
+                //HANDLES SLOTS
+                else if(choice.equalsIgnoreCase("S")) {
+                    boolean SLOTLOOP = true;
+                    while(SLOTLOOP) {
+                        SlotMachine slot = new SlotMachine(player);
+                        System.out.println("How much do you want to bet? (INT)");
+                        int bet = input.nextInt();
+                        if (bet <= player.getCash()) {
+                            slot.play(bet);
+                        } else {
+                            System.out.println("That bet is more money than you have.");
+                            System.out.println("You have: " + player.getCash() + "$");
+                        }
+                        System.out.println("Would you like to spin again? (Y/N)");
+                        input.nextLine();
+                        String spinagain = input.nextLine();
+                        if(spinagain.equalsIgnoreCase("n")) {
+                            SLOTLOOP = false;
+                        }
+                    }
+                }
+                else if(choice.equalsIgnoreCase("x"))
+                {
+                    GAMELOOP = false;
+                }
+                else{
+                    System.out.println("That is not a valid response");
                 }
             }
             else {
@@ -99,6 +140,7 @@ public class Main {
 
         }
         System.out.println("Thank you for playing!");
+        //Display the leaderboard
         System.out.println("Here is the updated leaderboard:");
         try {
             FileReader fr = new FileReader("history.txt");
@@ -121,8 +163,5 @@ public class Main {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-
-
     }
 }

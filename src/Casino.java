@@ -6,6 +6,7 @@ public class Casino {
     public Casino(Player player) {
         this.player = player;
     }
+    //Updates the .txt leaderboard to store scores
     public void updateHistory() throws IOException
     {
         FileReader fr = new FileReader("history.txt");

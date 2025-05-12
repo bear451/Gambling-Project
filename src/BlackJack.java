@@ -9,6 +9,7 @@ public class BlackJack extends Casino {
     public  BlackJack(Player player) {
         super(player);
     }
+    //Print initial playing cards
     public void printStartingCards(String x, String y)
     {
         System.out.println("-------------" +"       "+"-------------");
@@ -21,6 +22,7 @@ public class BlackJack extends Casino {
         System.out.println("|" + x +"         "+ x + "|"+"       "+"|" + y +"         "+ y + "|");
         System.out.println("-------------"+"       "+"-------------");
     }
+    //Print Card Hits
     public void hit(String value)
     {
         for(int i = 0; i <= 1; i++) {
@@ -36,9 +38,9 @@ public class BlackJack extends Casino {
         System.out.println("|" + value +"         "+ value + "|");
         System.out.println("-------------");
     }
+    //Print playing cards, TRUE is to print the cards for the player. FALSE for computer
     public void printCards(boolean comporplayer)
     {
-        //TRUE IS PLAYER
         printStartingCards(computer.get(0)," ");
         if(!comporplayer)
         {
@@ -57,6 +59,7 @@ public class BlackJack extends Casino {
             }
         }
     }
+    //Used when we want to print cards but reveal the card of the dealer
     public void printCards(boolean comporplayer, String y)
     {
         //TRUE IS PLAYER
@@ -78,6 +81,7 @@ public class BlackJack extends Casino {
             }
         }
     }
+    //This assigns a String for each card value
     public String assignCard(int value)
     {
         if(value == 1)
@@ -106,6 +110,7 @@ public class BlackJack extends Casino {
         }
         return "ERROR";
     }
+    //This returns the value of the current hand
     public int value(ArrayList<String> side)
     {
         int sum = 0;
@@ -132,16 +137,18 @@ public class BlackJack extends Casino {
         }
         return sum;
     }
+    //This determines if a hand is bust
     public boolean bust(ArrayList<String> side)
     {
         int sum = value(side);
         return !(sum <= 21);
     }
-
+    //This is the main game loop
     public void play(int amount)
     {
+        //Redundant check to make sure they have money
         if(getPlayer().getCash() > 0) {
-            //GENERATE CARDS
+            //GENERATE STARTING CARDS
             Random rand = new Random();
             int compCard1Value = rand.nextInt(13) + 1;
             int compCard2Value = rand.nextInt(13) + 1;
@@ -151,11 +158,14 @@ public class BlackJack extends Casino {
             String compCard2 = assignCard(compCard2Value);
             String playerCard1 = assignCard(playerCard1Value);
             String playerCard2 = assignCard(playerCard2Value);
+            //Print computer cards
             printStartingCards(compCard1, " ");
             for (int i = 0; i <= 4; i++) {
                 System.out.println();
             }
+            //Print Player Cards
             printStartingCards(playerCard1, playerCard2);
+            //Add the card strings to a list
             player.add(playerCard1);
             player.add(playerCard2);
             computer.add(compCard1);
@@ -175,19 +185,24 @@ public class BlackJack extends Casino {
                         String name = assignCard(card);
                         player.add(name);
                     }
+                    //Print the cards with the new hit
                     printCards(true);
+                    //handles if they go over 21
                     if (bust(player)) {
                         System.out.println("Oops! That's a bust. . . You lose");
                         go = false;
                         hit = "s";
                     }
                 }
+                //Computer loop
                 System.out.println();
                 System.out.println();
                 System.out.println("Revealing Cards");
                 printCards(true, computer.get(1));
+                //Handles the computers hits and determines the winner
                 boolean computerHits = true;
                 while (computerHits) {
+                    //Computer goes over 21
                     if (bust(computer)) {
                         System.out.println("Computer Busted! You win!");
                         System.out.println("You gain " + amount + " dollars");
@@ -199,11 +214,14 @@ public class BlackJack extends Casino {
                         }
                         computerHits = false;
                         go = false;
+                        //Computer value is greater than or = to 18 without busting
                     } else if (value(computer) >= 18 && value(computer) <= 21) {
+                        //If player and computer are equal
                         if (value(computer) == value(player)) {
                             System.out.println("Push! It's a Draw!");
                             computerHits = false;
                             go = false;
+                            //If computer Wins
                         } else if (value(computer) > value(player)) {
                             System.out.println("Computer wins :(");
                             System.out.println("You lose " + amount + " dollars");
@@ -215,6 +233,7 @@ public class BlackJack extends Casino {
                             }
                             go = false;
                             computerHits = false;
+                            //if the player wins
                         } else {
                             System.out.println("You Win!");
                             System.out.println("You gain " + amount + " dollars");
@@ -227,6 +246,7 @@ public class BlackJack extends Casino {
                             computerHits = false;
                             go = false;
                         }
+                        //Handles computer hitting
                     } else {
                         System.out.println("Computer Hits");
                         int card = rand.nextInt(13) + 1;
@@ -237,6 +257,7 @@ public class BlackJack extends Casino {
                 }
             }
         }
+        //If they some how get through the other check make sure they can't play if broke.
         else{
             System.out.println("You can't play because you are broke :(");
         }

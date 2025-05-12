@@ -9,6 +9,7 @@ public class Player {
     public Player(String name) {
         this.name = name;
         cash = 500;
+        //This Adds the Player to the history page if they make a new player
         try {
             FileWriter fw = new FileWriter("history.txt", true);
             FileReader fr = new FileReader("history.txt");
@@ -26,10 +27,12 @@ public class Player {
             throw new RuntimeException(e);
         }
     }
+    //This is used to store a player who has an account
     public Player(String name, int cash) {
         this.name = name;
         this.cash = cash;
     }
+    //Get and set methods
     public String getName() {
         return name;
     }
