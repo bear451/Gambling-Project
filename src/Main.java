@@ -79,10 +79,11 @@ public class Main {
         boolean GAMELOOP = true;
         while(GAMELOOP)
         {
-            //Black Jack
+            //PICK A GAME
             if(player.getCash() > 0) {
                 System.out.println("Would you like to play BlackJack or Slots? (B/S) (X=to exit)");
                 String choice = input.nextLine();
+                //HANDLES BLACKJACK
                 if(choice.equalsIgnoreCase("B")) {
                     boolean blackjackloop = true;
                     while (blackjackloop) {
