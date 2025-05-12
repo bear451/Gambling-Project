@@ -35,7 +35,6 @@ public class Main {
                     FileReader fr = new FileReader("History.txt");
                     BufferedReader br = new BufferedReader(fr);
                     String line = br.readLine();
-                    boolean found = false;
                     while(line != null)
                     {
                         if(line.toLowerCase().contains(name.toLowerCase()))
@@ -71,8 +70,59 @@ public class Main {
 
         }
         //Precondition-Player is not null
-        Casino casino = new Casino(player);
-        BlackJack blackjack = new BlackJack(player);
-        blackjack.play(30);
+        BlackJack blackjack;
+        boolean GAMELOOP = true;
+        while(GAMELOOP)
+        {
+            if(player.getCash() < 0) {
+                blackjack = new BlackJack(player);
+                System.out.println("How much do you want to bet? (INT)");
+                int bet = input.nextInt();
+                if (bet > player.getCash()) {
+                    blackjack.play(bet);
+                    System.out.println("Your current balance is: " + player.getCash() + "$");
+                    System.out.println("Would you like to play again? (Y/N)");
+                    input.nextLine();
+                    String keeponkeepingon = input.nextLine();
+                    if (keeponkeepingon.equalsIgnoreCase("n")) {
+                        GAMELOOP = false;
+                    }
+                } else {
+                    System.out.println("That bet is more money than you have.");
+                    System.out.println("You have: " + player.getCash() + "$");
+                }
+            }
+            else {
+                GAMELOOP = false;
+                System.out.println("I'm sorry, you're account is all out of cash");
+            }
+
+        }
+        System.out.println("Thank you for playing!");
+        System.out.println("Here is the updated leaderboard:");
+        try {
+            FileReader fr = new FileReader("history.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line = null;
+            try {
+                line = br.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            while(line != null)
+            {
+                System.out.println(line);
+                try {
+                    line = br.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
     }
 }

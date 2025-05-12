@@ -1,2 +1,3 @@
 Layton:700
-James:500
+Lexi:500
+Stacy:2000

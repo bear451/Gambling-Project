@@ -11,15 +11,17 @@ public class Casino {
         FileReader fr = new FileReader("history.txt");
         BufferedReader br = new BufferedReader(fr);
         ArrayList<String> str = new ArrayList<String>();
-                while (br.readLine() != null)
+        String line = br.readLine();
+                while (line != null)
                 {
-                    if(br.readLine().equals(player.getName()))
+                    if(line.contains(player.getName()))
                     {
                         str.add(player.getName() + ":" + player.getCash());
                     }
                     else {
-                        str.add(br.readLine());
+                        str.add(line);
                     }
+                    line = br.readLine();
                 }
                 FileWriter fw = new FileWriter("history.txt");
                 BufferedWriter bw = new BufferedWriter(fw);
