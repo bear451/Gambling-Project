@@ -1,4 +1,1 @@
-Layton:920
-Jimmy:350
-Fox:600
-Lebron:300
+Layton:360

@@ -174,6 +174,7 @@ public class BlackJack extends Casino {
             //GAME LOOP
             while (go) {
                 Scanner input = new Scanner(System.in);
+                boolean playerbust = false;
                 //TRUE == Player, FALSE == Computer
                 String hit = "";
                 //HIT OR STAND LOOP
@@ -192,50 +193,27 @@ public class BlackJack extends Casino {
                         System.out.println("Oops! That's a bust. . . You lose");
                         go = false;
                         hit = "s";
-                    }
-                }
-                //Computer loop
-                System.out.println();
-                System.out.println();
-                System.out.println("Revealing Cards");
-                printCards(true, computer.get(1));
-                //Handles the computers hits and determines the winner
-                boolean computerHits = true;
-                while (computerHits) {
-                    //Computer goes over 21
-                    if (bust(computer)) {
-                        System.out.println("Computer Busted! You win!");
-                        System.out.println("You gain " + amount + " dollars");
-                        getPlayer().addCash(amount);
+                        getPlayer().addCash(amount * -1);
+                        playerbust = true;
                         try {
                             updateHistory();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                        computerHits = false;
-                        go = false;
-                        //Computer value is greater than or = to 18 without busting
-                    } else if (value(computer) >= 18 && value(computer) <= 21) {
-                        //If player and computer are equal
-                        if (value(computer) == value(player)) {
-                            System.out.println("Push! It's a Draw!");
-                            computerHits = false;
-                            go = false;
-                            //If computer Wins
-                        } else if (value(computer) > value(player)) {
-                            System.out.println("Computer wins :(");
-                            System.out.println("You lose " + amount + " dollars");
-                            getPlayer().addCash(amount * -1);
-                            try {
-                                updateHistory();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            go = false;
-                            computerHits = false;
-                            //if the player wins
-                        } else {
-                            System.out.println("You Win!");
+                    }
+                }
+                //Computer loop
+                if (!playerbust) {
+                    System.out.println();
+                    System.out.println();
+                    System.out.println("Revealing Cards");
+                    printCards(true, computer.get(1));
+                    //Handles the computers hits and determines the winner
+                    boolean computerHits = true;
+                    while (computerHits) {
+                        //Computer goes over 21
+                        if (bust(computer)) {
+                            System.out.println("Computer Busted! You win!");
                             System.out.println("You gain " + amount + " dollars");
                             getPlayer().addCash(amount);
                             try {
@@ -245,14 +223,46 @@ public class BlackJack extends Casino {
                             }
                             computerHits = false;
                             go = false;
+                            //Computer value is greater than or = to 18 without busting
+                        } else if (value(computer) >= 18 && value(computer) <= 21) {
+                            //If player and computer are equal
+                            if (value(computer) == value(player)) {
+                                System.out.println("Push! It's a Draw!");
+                                computerHits = false;
+                                go = false;
+                                //If computer Wins
+                            } else if (value(computer) > value(player)) {
+                                System.out.println("Computer wins :(");
+                                System.out.println("You lose " + amount + " dollars");
+                                getPlayer().addCash(amount * -1);
+                                try {
+                                    updateHistory();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                go = false;
+                                computerHits = false;
+                                //if the player wins
+                            } else {
+                                System.out.println("You Win!");
+                                System.out.println("You gain " + amount + " dollars");
+                                getPlayer().addCash(amount);
+                                try {
+                                    updateHistory();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                computerHits = false;
+                                go = false;
+                            }
+                            //Handles computer hitting
+                        } else {
+                            System.out.println("Computer Hits");
+                            int card = rand.nextInt(13) + 1;
+                            String name = assignCard(card);
+                            computer.add(name);
+                            printCards(false, computer.get(1));
                         }
-                        //Handles computer hitting
-                    } else {
-                        System.out.println("Computer Hits");
-                        int card = rand.nextInt(13) + 1;
-                        String name = assignCard(card);
-                        computer.add(name);
-                        printCards(false, computer.get(1));
                     }
                 }
             }
