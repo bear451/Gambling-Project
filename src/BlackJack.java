@@ -208,7 +208,7 @@ public class BlackJack extends Casino {
                     System.out.println();
                     System.out.println("Revealing Cards");
                     printCards(true, computer.get(1));
-                    //Handles the computers hits and determines the winner
+                    //Handles the computers hits and determines the winner a
                     boolean computerHits = true;
                     while (computerHits) {
                         //Computer goes over 21

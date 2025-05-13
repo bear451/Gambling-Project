@@ -27,7 +27,7 @@ public class Player {
             throw new RuntimeException(e);
         }
     }
-    //This is used to store a player who has an account
+    //This is used to store a player who has an account a
     public Player(String name, int cash) {
         this.name = name;
         this.cash = cash;

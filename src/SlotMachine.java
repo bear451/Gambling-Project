@@ -28,6 +28,7 @@ public class SlotMachine extends Casino{
         }
         return 0;
     }
+    //Slots play
     public void play(int amount)
     {
         System.out.println("It's time to spin!");
